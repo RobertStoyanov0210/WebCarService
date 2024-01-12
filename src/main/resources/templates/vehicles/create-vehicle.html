@@ -1,0 +1,46 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: head"></head>
+<body>
+<header th:replace="fragments :: header"></header>
+<h1>Add vehicle</h1>
+<div class="col-6">
+    <form th:action="@{/vehicles/create}" th:object="${vehicle}" method="POST" enctype="utf8">
+        <label for="brand">
+            Select brand
+            <select class="form-control basic-single" th:field="*{brand}">
+                <option th:each="b : ${brands}"
+                        th:value="${b.id}"
+                        th:text="${b.name}">
+
+                </option>
+            </select>
+            <p th:each="error : ${#fields.errors('brand')}"
+               th:text="${error}">Brand error</p>
+        </label>
+        <div>
+            <label for="model">Model</label>
+            <input th:field="*{model}"/>
+            <p th:each="error: ${#fields.errors('model')}"
+               th:text="${error}">Model error</p>
+        </div>
+        <div>
+            <label for="productionYear">Prod. year</label>
+            <input th:field="*{productionYear}"/>
+            <p th:each="error : ${#fields.errors('productionYear')}"
+               th:text="${error}">Year error</p>
+        <button type="submit">Save</button>
+    </form>
+</div>
+<footer th:replace="fragments :: footer"></footer>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#brand').select2({
+            placeholder: 'Select brand'
+        });
+    });
+</script>
+</body>
+</html>

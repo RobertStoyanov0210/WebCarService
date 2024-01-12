@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body class="container w-75 mx-auto pb-5">
+<header th:replace="fragments :: header"></header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-auto">
+            <h1>History of repairs</h1>
+            <h3 th:unless="${repairs} and ${repairs.size()}">No repairs!</h3>
+            <!--            <h3 th:if="${vehicles.size() > 0}">Vehicles</h3>-->
+        </div>
+    </div>
+</div>
+<table th:if="${repairs.size() > 0}" class="table table-hover">
+    <th>Car service</th>
+    <th>vehicle</th>
+    <th>More</th>
+    <tr th:each="repair : ${repairs}">
+        <td th:text="${repair.carService.name}"></td>
+        <td th:text="${repair.vehicle.model}"></td>
+        <td><a class="btn btn-info" th:href="@{'/brands/edit/'+${repair.id}}">Link</a></td>
+    </tr>
+</table>
+</body>
+<footer th:replace="fragments :: footer"></footer>
+</html>

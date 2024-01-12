@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body class="container w-75 mx-auto pb-5">
+<header th:replace="fragments :: header"></header>
+<h3 th:unless="${repairs} and ${repairs.size()}">No repairs!</h3>
+<!--<a href="create-carservice" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Add</a>-->
+<h3 th:if="${repairs.size() > 0}">Repairs in progress</h3>
+<table th:if="${repairs.size() > 0}" class="table table-hover">
+  <th>Vehicle(LINK History)</th>
+  <th>Customer</th>
+  <th>Sum</th>
+  <th>Finish</th>
+  <th>Delete</th>
+  <tr th:each="repair : ${repairs}">
+    <td th:text="${repair.vehicle.getModel()}"></td>
+    <td th:text="${repair.customer.getUsername()}"></td>
+    <td th:text="${repair.sum}"></td>
+    <td><a class="btn btn-info" th:href="@{'/carservices/' + ${repair.carService.getId()}+ '/repairs/'+${repair.id}+'/finish'}">Finish</a></td>
+<!--    <td><a class="btn btn-danger" th:href="@{'/carservices/delete/'+${carService.id}}">Delete</a></td>-->
+  </tr>
+</table>
+</body>
+<footer th:replace="fragments :: footer"></footer>
+</html>

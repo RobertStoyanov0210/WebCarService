@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body class="container w-75 mx-auto pb-5">
+<header th:replace="fragments :: header"></header>
+<h1>My Reservations</h1>
+<h3 th:unless="${reservations} and ${reservations.size()}">No reservations!</h3>
+<table th:if="${reservations.size() > 0}" class="table table-hover">
+    <th>Car service</th>
+    <th>Vehicle</th>
+    <th>Date</th>
+    <th>Cancel</th>
+    <tr th:each="reservation : ${reservations}">
+        <form th:action="@{/reservations/cancel}" method="POST" enctype="utf8">
+            <!--            <td><input type="text" th:value="${addr.name}" th:field="*{addressList[__${addrStat.index}__].name}"></td>-->
+            <input type="hidden" th:value="${reservation.getId().carServiceId}" th:name="carServiceId">
+            <input type="hidden" th:value="${reservation.getId().vehicleId}" th:name="vehicleId">
+            <input type="hidden" th:value="${reservation.getId().date}" th:name="date">
+
+            <td th:text="${reservation.getCarService().name}"></td>
+            <td th:text="${reservation.vehicle.model}"></td>
+            <td th:text="${reservation.getId().date}"></td>
+            <td>
+                <button type="submit" class="btn btn-secondary btn-lg active">Cancel</button>
+            </td>
+        </form>
+    </tr>
+</table>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script>
+    $('.alert').alert()
+</script>
+</body>
+<footer th:replace="fragments :: footer"></footer>
+</html>

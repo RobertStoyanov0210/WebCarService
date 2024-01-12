@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body class="container w-75 mx-auto pb-5">
+<header th:replace="fragments :: header"></header>
+<h1>Reservations</h1>
+<!--<h3 class="alert alert-danger" th:if="${limitReached}">No free space!</h3>-->
+<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${limitReached}" >
+    <strong>No free space!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<h3 th:unless="${reservations} and ${reservations.size()}">No reservations!</h3>
+<table th:if="${reservations.size() > 0}" class="table table-hover">
+    <th>Vehicle</th>
+    <th>Date</th>
+    <th>Take</th>
+    <th>Cancel</th>
+    <tr th:each="reservation : ${reservations}">
+        <td th:text="${reservation.getVehicleId()}"></td>
+        <td th:text="${reservation.getDate()}"></td>
+        <td><a class="btn btn-info" th:href="@{'/carservices/' + ${reservation.getCarServiceId()} +'/reservations/'+${reservation.getVehicleId()} + '/' + ${reservation.getDate()} + '/take'}">Take</a></td>
+        <td><a class="btn btn-danger" th:href="@{'/reservations/'+${reservation.id} + '/cancel'}">Cancel</a></td>
+<!--        TODO after adding current capacity check it and allow TAKE base on that-->
+<!--        <td th:if="${vehicle.getReservations().size() < 1}"><a class="btn btn-info" th:href="@{'/carservices/reserve/'+${vehicle.id}}">Search</a></td>-->
+<!--        <td th:unless="${vehicle.getReservations().size() < 1}"><a class="btn btn-info" th:href="@{'/reservations/'+${vehicle.id}}">View reservation</a></td>-->
+    </tr>
+</table>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script>
+    $('.alert').alert()
+</script>
+</body>
+<footer th:replace="fragments :: footer"></footer>
+</html>

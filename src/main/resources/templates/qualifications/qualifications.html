@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body class="container w-75 mx-auto pb-5">
+<header th:replace="fragments :: header"></header>
+<h3 th:unless="${qualifications} and ${qualifications.size()}">No qualifications!</h3>
+<h3 th:if="${qualifications.size() > 0}">Qualifications</h3>
+<a href="create-qualification" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Add</a>
+<table th:if="${qualifications.size() > 0}" class="table table-hover">
+    <th><a th:href="@{'/qualifications/sort-by-name/'+${sortDirection}}"> Name</a></th>
+    <th>Edit</th>
+    <th>Delete</th>
+    <tr th:each="qualification : ${qualifications}">
+        <td th:text="${qualification.name}"></td>
+        <td>Click here for more</td>
+        <td><a class="btn btn-info" th:href="@{'/qualifications/edit/'+${qualification.id}}">Edit</a></td>
+        <td><a class="btn btn-danger" th:href="@{'/qualifications/delete/'+${qualification.id}}">Delete</a></td>
+    </tr>
+</table>
+</body>
+<footer th:replace="fragments :: footer"></footer>
+</html>

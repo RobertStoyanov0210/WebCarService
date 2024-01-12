@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body>
+<h4>Edit role</h4>
+<div class="col-6">
+    <form action="#" th:action="@{/roles/update/{id}(id=${id})}" th:object="${role}" method="post">
+        <div class="form-group">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input class="form-control" type="text" th:field="*{authority}" placeholder="Name" id="name">
+                <span class="text-danger" th:if="${#fields.hasErrors('authority')}" th:errors="*{authority}">Authority Error</span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+</body>
+<footer th:replace="fragments :: footer"></footer>
+</html>

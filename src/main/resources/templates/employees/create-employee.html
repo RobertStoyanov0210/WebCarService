@@ -1,0 +1,82 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: head"></head>
+<body>
+<header th:replace="fragments :: header"></header>
+<h1>Add employee</h1>
+<div class="col-6">
+    <form th:action="@{/employees/create}" th:object="${employee}" method="POST" enctype="utf8">
+        <div>
+            <label for="firstName">First name</label>
+            <input th:field="*{firstName}" id="firstName"/>
+            <p th:each="error: ${#fields.errors('firstName')}"
+               th:text="${error}">Validation error</p>
+        </div>
+        <div>
+            <label for="lastName">Last name</label>
+            <input th:field="*{lastName}" id="lastName"/>
+            <p th:each="error : ${#fields.errors('lastName')}"
+               th:text="${error}">Validation error</p>
+        </div>
+        <div>
+            <label for="username">Username</label>
+            <input th:field="*{username}"/>
+            <p th:each="error : ${#fields.errors('username')}"
+               th:text="${error}">Validation error</p>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" th:field="*{password}" id="password"/>
+            <p th:each="error : ${#fields.errors('password')}"
+               th:text="${error}">Validation error</p>
+        </div>
+        <div>
+            <label for="confirm_password">confirm</label>
+            <input type="password" th:field="*{matchingPassword}" id="confirm_password"/>
+            <p th:each="error : ${#fields.errors('matchingPassword')}"
+               th:text="${error}">Validation error</p>
+        </div>
+        <label for="carService">
+            Select car service
+            <select class="form-control basic-single" th:field="*{carService}">
+                <option th:each="cs : ${carServices}"
+                        th:value="${cs.id}"
+                        th:text="${cs.name}">
+
+                </option>
+            </select>
+            <p th:each="error : ${#fields.errors('carService')}"
+               th:text="${error}">Car service error</p>
+        </label>
+        <label for="qualifications">
+            Select qualifications
+            <select class="form-control basic-multiple" th:field="*{qualifications}" multiple="multiple">
+                <option th:each="qualification : ${qualificationsALL}"
+                        th:value="${qualification.id}"
+                        th:text="${qualification.name}">
+
+                </option>
+            </select>
+            <p th:each="error : ${#fields.errors('qualifications')}"
+               th:text="${error}">Qualifications error</p>
+        </label>
+        <button type="submit">Save</button>
+    </form>
+</div>
+<footer th:replace="fragments :: footer"></footer>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#qualifications').select2({
+            placeholder: 'Select qualifications'
+        });
+    });
+    $(document).ready(function () {
+        $('#carService').select2({
+            placeholder: 'Select car service'
+        });
+    });
+</script>
+</body>
+</html>

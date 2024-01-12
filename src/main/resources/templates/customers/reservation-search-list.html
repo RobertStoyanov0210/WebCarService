@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body class="container w-75 mx-auto pb-5">
+<header th:replace="fragments :: header"></header>
+<!--<a href="create-carservice" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Add</a>-->
+<form th:action="@{/carservices/filtered}"  method="POST" enctype="utf8">
+    <input type="hidden" name="vehicleId" th:value="${vehicle.id}">
+    <label for="qualification">
+        Select qualification
+        <select class="form-control basic-single" name="qualification" id="qualification">
+            <option th:each="qualification : ${qualifications}"
+                    th:value="${qualification.id}"
+                    th:text="${qualification.name}">
+
+            </option>
+        </select>
+    </label>
+    <button type="submit" class="btn btn-secondary btn-lg active">Filter</button>
+</form>
+<h3 th:unless="${carServices} and ${carServices.size()}">No Car services!</h3>
+<table th:if="${carServices.size() > 0}" class="table table-hover">
+    <th>Name</th>
+    <th>Capacity</th>
+    <th>Reserve</th>
+    <th>Is full</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    <tr th:each="carService : ${carServices}">
+        <td th:text="${carService.name}"></td>
+        <td th:text="${carService.maxRepairingCars}"></td>
+        <!--        <td><a class="btn btn-info" th:href="@{'/carservices/'+${carService.id}+'/reserve/'+ ${vehicle.id}}">Reserve</a></td>-->
+        <td th:if="${carService.vehiclesInRepair.size() + 1 < carService.maxRepairingCars}"><a class="btn btn-info"
+                                                                                               th:href="@{'/carservices/'+${carService.id}+'/reserve/'+ ${vehicle.id}}">Reserve</a>
+        </td>
+        <td th:unless="${carService.vehiclesInRepair.size() + 1 < carService.maxRepairingCars}">Full</td>
+        <td th:if="${carService.vehiclesInRepair.size() + 1 < carService.maxRepairingCars}">No</td>
+        <td th:unless="${carService.vehiclesInRepair.size() + 1 < carService.maxRepairingCars}">Yes</td>
+    </tr>
+</table>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#qualification').select2({
+            placeholder: 'Select qualification'
+        });
+    });
+</script>
+</body>
+<footer th:replace="fragments :: footer"></footer>
+</html>

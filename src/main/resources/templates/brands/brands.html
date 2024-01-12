@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body class="container w-75 mx-auto pb-5">
+<header th:replace="fragments :: header"></header>
+<h3 th:unless="${brands} and ${brands.size()}">No brands!</h3>
+<a href="create-brand" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Add</a>
+<table th:if="${brands.size() > 0}" class="table table-hover">
+    <th>Brand</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    <tr th:each="brand : ${brands}">
+        <td th:text="${brand.name}"></td>
+        <td>Click here for more</td>
+        <td><a class="btn btn-info" th:href="@{'/brands/edit/'+${brand.id}}">Edit</a></td>
+        <td><a class="btn btn-danger" th:href="@{'/brands/delete/'+${brand.id}}">Delete</a></td>
+    </tr>
+</table>
+</body>
+<footer th:replace="fragments :: footer"></footer>
+</html>

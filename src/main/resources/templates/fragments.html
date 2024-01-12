@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>Auto Service</title>
+    <link rel="stylesheet" href="/css/bootstrap.css" th:ref="@{/css/bootstrap.css}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+</head>
+<header th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+        <a class="navbar-brand" href="/">Auto Service</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup" sec:authorize="isAuthenticated()">
+            <!--            ADMIN-->
+            <div class="navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+                <a class="nav-item nav-link" href="/qualifications/">Qualifications</a>
+                <a class="nav-item nav-link" href="/employees/">Employees</a>
+                <a class="nav-item nav-link" href="/brands/">Brands</a>
+                <a class="nav-item nav-link" href="/roles/">Roles</a>
+                <a class="nav-item nav-link" href="/carservices/">CarServi</a>
+                <a class="nav-item nav-link" href="/vehicles/my">My vehicles(customer)</a>
+            </div>
+            <!--EMPLOYEE-->
+            <div class="navbar-nav" sec:authorize="hasAuthority('EMPLOYEE')">
+                <a class="nav-item nav-link" th:href="@{/carservices/{id}/repairs(id=${#authentication.getPrincipal().getCarService().getId()})}">Current repairs</a>
+                <a class="nav-item nav-link" th:href="@{/carservices/{id}/reservations(id=${#authentication.getPrincipal().getCarService().getId()})}">Reservations</a>
+                <a class="nav-item nav-link" href="/carservices/history">Fixed vehicles</a>
+                <a class="nav-item nav-link" href="/employees/">Statistics</a>
+            </div>
+            <!--            CUSTOMER-->
+            <div class="navbar-nav" sec:authorize="hasAuthority('CUSTOMER')">
+<!--                <a class="nav-item nav-link" href="/carservices/">CarServices</a>-->
+                <a class="nav-item nav-link" href="/vehicles/my">My vehicles</a>
+                <a class="nav-item nav-link" href="/reservations/my">My Reservations</a>
+                <a class="nav-item nav-link" href="/customer/repairs/history">History(Repairs)</a>
+            </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup" sec:authorize="isAnonymous()">
+            <!--            GUEST-->
+            <div class="navbar-nav">
+            </div>
+        </div>
+        <div class="col-3" sec:authorize="isAuthenticated()">
+            Hello,
+            <span sec:authentication="name"></span>
+            <a class="btn" th:href="@{/logout}">Logout</a>
+        </div>
+        <div class="col-3" sec:authorize="isAnonymous()">
+            <a class="btn" th:href="@{/login}">Login</a>
+            <span>/</span>
+            <a class="btn" th:href="@{/register}">Register</a>
+        </div>
+    </nav>
+</header>
+<footer th:fragment="footer" page-footer font-small>
+    <div class="footer-copyright text-center py-3">© 2021 Copyright:
+        <a href="#"> Auto Service System</a>
+    </div>
+</footer>
+</html>

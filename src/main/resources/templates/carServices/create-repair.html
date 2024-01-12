@@ -1,0 +1,66 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:form="http://www.w3.org/1999/html">
+<head th:replace="fragments :: head"></head>
+<body>
+<header th:replace="fragments :: header"></header>
+<h1>Add Repair</h1>
+<div class="container">
+    <div class="row">
+<!--        <div class="col-3">-->
+<!--            <div>-->
+<!--                <h3>Car service</h3>-->
+<!--                <h3 th:text="${carService.name}"></h3>-->
+<!--                <h3 th:text="${carService.maxRepairingCars}"></h3>-->
+<!--                <h4 th:each="brand : ${carService.supportedBrands}">-->
+<!--                    <h4 th:text="${brand.name}"></h4>-->
+<!--                </h4>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-3">-->
+<!--            <div>-->
+<!--                <h3>My vehicle</h3>-->
+<!--                <h3 th:text="${vehicle.brand.name}"></h3>-->
+<!--                <h3 th:text="${vehicle.model}"></h3>-->
+<!--                <h3 th:text="${vehicle.productionYear}"></h3>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="col-6">
+            <form th:action="@{/repairs/create}" th:object="${repair}" method="POST" enctype="utf8">
+                <input type="hidden" th:field="*{carServiceId}"/>
+                <input type="hidden" th:field="*{vehicleId}"/>
+                <input type="hidden" th:field="*{date}"/>
+<!--                <form:hidden path = "date" class = "date"/>-->
+                <input type="hidden" th:value="${reservation.getCarServiceId()}" th:attr="name='createRepairViewModel.carService'"/>
+                <input type="hidden" th:value="${reservation.getVehicleId()}" th:attr="name='createRepairViewModel.vehicle'"/>
+                <input type="hidden" th:value="${customerId}" th:attr="name='createRepairViewModel.customer'"/>
+                <label for="qualifications">
+                    Select services
+                    <select class="form-control basic-multiple" th:value="${repair.createRepairViewModel.plannedFixes}" th:attr="name='createRepairViewModel.plannedFixes'" id="plannedFixes" multiple="multiple">
+                        <option th:each="qualification : ${pricelists}"
+                                th:value="${qualification.id}"
+                                th:text="${qualification.name}">
+                        </option>
+                    </select>
+                    <p th:each="error : ${#fields.errors('createRepairViewModel.plannedFixes')}"
+                       th:text="${error}">Service error</p>
+                </label>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<footer th:replace="fragments :: footer"></footer>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#plannedFixes').select2({
+            placeholder: 'Select qualifications'
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: head"></head>
+<body class="container w-75 mx-auto pb-5">
+<header th:replace="fragments :: header"></header>
+<h1>Make reservation</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-auto">
+            <div>
+                <h3 th:text="'Car service: ' + ${carService.name}"></h3>
+                <h3 th:text="'Capacity: '+${carService.maxRepairingCars}"></h3>
+                <h3>Supported brands:</h3>
+                <h4 th:each="brand : ${carService.supportedBrands}">
+                    <h4 th:text="${brand.name}"></h4>
+                </h4>
+            </div>
+        </div>
+        <div class="col-md-auto">
+            <div>
+                <h3>My vehicle</h3>
+                <h3 th:text="'Brand: ' +${vehicle.brand.name}"></h3>
+                <h3 th:text="'Model: ' + ${vehicle.model}"></h3>
+                <h3 th:text="'Production year' + ${vehicle.productionYear}"></h3>
+            </div>
+        </div>
+        <div class="col-md-auto">
+            <form th:action="@{/carservices/reserve}" th:object="${reservation}" method="POST" enctype="utf8">
+                <input type="hidden" th:value="${carService.id}" th:attr="name='carService'"/>
+                <input type="hidden" th:value="${vehicle.id}" th:attr="name='vehicle'"/>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input class="form-control" type="date" th:field="*{date}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('date')}"
+                          th:errors="*{date}">Reservation Date Error</span>
+                </div>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<footer th:replace="fragments :: footer"></footer>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#supportedBrands').select2({
+            placeholder: 'Select brand'
+        });
+    });
+</script>
+</body>
+</html>
